@@ -110,9 +110,26 @@
             z-index: 2;
         }
 
-        .header-right { cursor: pointer; position: relative; }
-        .header-right i { font-size: 24px; transition: color 0.3s; }
-        .header-right:hover i { color: var(--primary-color); }
+        .header-right {
+            gap: 20px;
+            position: relative;
+        }
+
+        .icon-btn {
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .icon-btn i {
+            font-size: 24px;
+            transition: color 0.3s;
+        }
+
+        .icon-btn:hover i {
+            color: var(--primary-color);
+        }
 
         .cart-badge {
             position: absolute;
@@ -728,38 +745,61 @@
         }
         .social-icons i:hover { color: var(--primary-color); }
 
-        /* --- Modal --- */
+        /* --- Modal General --- */
         .modal-content {
-            border-radius: 4px;
+            border-radius: 8px;
             border: none;
-            background-color: var(--bg-light);
+            background-color: #fff;
+            padding: 20px;
         }
-        .modal-header {
-            border-bottom: 1px solid var(--primary-color);
-            padding: 20px 30px;
-        }
+        
+        /* --- Simple Auth Modal Styling --- */
         .modal-title {
             font-family: var(--font-heading);
             color: var(--primary-color);
             font-size: 1.8rem;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 20px;
         }
-        .modal-body { padding: 30px; }
-        .modal-body .form-label {
-            font-weight: 500;
-            font-size: 0.9rem;
-            margin-bottom: 5px;
+        .auth-form .form-control {
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            box-shadow: none;
         }
-        .modal-body .form-control {
-            border-radius: 2px;
-            background-color: #fff;
-        }
-        .modal-body .form-control:focus {
+        .auth-form .form-control:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 0.2rem rgba(198, 168, 124, 0.25);
         }
-        .modal-footer {
-            border-top: 1px solid #eee;
-            padding: 20px 30px;
+        .auth-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+            width: 100%;
+            margin-bottom: 15px;
+            transition: background 0.3s;
+        }
+        .auth-btn:hover {
+            background-color: #b09368;
+            color: white;
+        }
+        .auth-link {
+            color: #666;
+            font-size: 0.9rem;
+            text-align: center;
+            display: block;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .auth-link:hover {
+            color: var(--primary-color);
         }
 
         /* --- Responsive --- */
@@ -788,6 +828,7 @@
                 width: 280px;
                 padding: 30px 20px;
             }
+            .header-right { gap: 12px; }
         }
     </style>
 </head>
@@ -874,22 +915,9 @@
                                 <label class="form-label">Tanggal Acara *</label>
                                 <input type="date" class="form-control" id="custDate" required>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Tema / Warna</label>
-                                <input type="text" class="form-control" id="custTheme" placeholder="Contoh: Bunga pastel">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Tulisan di Kue</label>
-                                <input type="text" class="form-control" id="custText" placeholder="Contoh: Happy Birthday Sarah">
-                            </div>
                             <div class="col-md-12 mb-3">
                                 <label class="form-label">Estimasi Budget</label>
                                 <input type="text" class="form-control" id="custBudget" placeholder="Contoh: Rp 200.000">
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label">Upload Foto Referensi (Opsional)</label>
-                                <input type="file" class="form-control" id="custImage" accept="image/*">
-                                <small class="text-muted" style="font-size: 0.8rem;">*Foto yang dipilih tidak akan terkirim otomatis. Silakan lampirkan (attach) foto secara manual di chat WhatsApp setelah ini.</small>
                             </div>
                         </div>
                     </div>
@@ -904,19 +932,89 @@
         </div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- MODAL LOGIN (SIMPLE) -->
+    <!-- ========================================== -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+            <div class="modal-content auth-form">
+                <div class="modal-body">
+                    <h5 class="modal-title">Log masuk</h5>
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <input type="email" class="form-control" id="loginEmail" placeholder="Email" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" class="form-control" id="loginPassword" placeholder="Kata Sandi" required>
+                        </div>
+                        <button type="submit" class="auth-btn">Log masuk</button>
+                        <span class="auth-link" onclick="switchToRegister()">Tidak punya akun? Daftar</span>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MODAL REGISTER (SIMPLE) -->
+    <!-- ========================================== -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+            <div class="modal-content auth-form">
+                <div class="modal-body">
+                    <h5 class="modal-title">Daftar Akun</h5>
+                    <form id="registerForm">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="regName" placeholder="Nama Lengkap" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="email" class="form-control" id="regEmail" placeholder="Email" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" class="form-control" id="regPassword" placeholder="Kata Sandi" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" class="form-control" id="regConfirmPassword" placeholder="Konfirmasi Kata Sandi" required>
+                        </div>
+                        <button type="submit" class="auth-btn">Daftar</button>
+                        <span class="auth-link" onclick="switchToLogin()">Sudah punya akun? Log masuk</span>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Header (Navbar) -->
     <header id="header">
         <div class="header-left">
             <i class="fas fa-bars hamburger" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"></i>
         </div>
         <div class="logo">D'Lumerz</div>
-        <div class="header-right" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-            <i class="fas fa-shopping-bag"></i>
-            <span class="cart-badge" id="cart-badge">0</span>
+        <div class="header-right">
+            <!-- Login Button (belum login) -->
+            <div id="loginBtn" class="icon-btn" data-bs-toggle="modal" data-bs-target="#loginModal">
+                <i class="fas fa-user"></i>
+            </div>
+            <!-- User Dropdown (setelah login) -->
+            <div id="userDropdown" class="dropdown d-none">
+                <a class="icon-btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration:none; color:inherit;">
+                    <i class="fas fa-user-check"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><span class="dropdown-item-text" id="userNameDisplay">Hi, User</span></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#" onclick="logout(event)">Logout</a></li>
+                </ul>
+            </div>
+            <!-- Cart -->
+            <div class="icon-btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="cart-badge" id="cart-badge">0</span>
+            </div>
         </div>
     </header>
 
-    <!-- HERO CAROUSEL (HEADER) - 3 GAMBAR -->
+    <!-- HERO CAROUSEL -->
     <section class="hero-carousel" id="hero">
         <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
             <div class="carousel-indicators">
@@ -1032,7 +1130,6 @@
                         <button class="btn-buy" onclick="buyNow('Bolu Mentega', 45000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThY--m4OeHZRgs723ChbVXn5PPlHH7AI8Cl5SYNSExQgW7yRbvWChoslZI&s=10')">Beli</button>
                     </div>
                 </div>
-                <!-- Chocolate Drip Cake -->
                 <div class="product-card">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO9KmyVltCNQ4brZdfvD2_LS36e9esqNZDnUJv2v03aNnbM6EMjgxFOKk&s=10" alt="Chocolate Drip Cake">
                     <h4>Chocolate Drip Cake</h4>
@@ -1066,7 +1163,6 @@
                         <button class="btn-buy" onclick="buyNow('Mini Fruit Tart', 35000, 'https://43andcompany.myshopify.com/cdn/shop/products/IMG_3783.jpg?v=1638209279')">Beli</button>
                     </div>
                 </div>
-                <!-- Vanilla Tart -->
                 <div class="product-card">
                     <img src="https://img.taste.com.au/QjnE5ZSu/w1200-h1200-cfill-q80/taste/2016/11/classic-custard-tarts-92533-1.jpeg" alt="Vanilla Tart">
                     <h4>Vanilla Tart</h4>
@@ -1076,7 +1172,6 @@
                         <button class="btn-buy" onclick="buyNow('Vanilla Tart', 35000, 'https://img.taste.com.au/QjnE5ZSu/w1200-h1200-cfill-q80/taste/2016/11/classic-custard-tarts-92533-1.jpeg')">Beli</button>
                     </div>
                 </div>
-                <!-- Chocolate Tart -->
                 <div class="product-card">
                     <img src="https://www.elmundoeats.com/wp-content/uploads/2024/02/Mini-salted-chocolate-tarts.jpg" alt="Chocolate Tart">
                     <h4>Chocolate Tart</h4>
@@ -1119,7 +1214,6 @@
                         <button class="btn-buy" onclick="buyNow('Nastar', 45000, 'https://cdn1-production-images-kly.akamaized.net/J71ayPSBpZZM0E4GeVldjA3d-cE=/1280x720/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/928916/original/041260800_1436887793-Kue-Khas-Lebaran-Nastar.jpg')">Beli</button>
                     </div>
                 </div>
-                <!-- Pisang Cokelat -->
                 <div class="product-card">
                     <img src="https://i.pinimg.com/736x/49/92/a1/4992a12ccefda90c055250514b724e8b.jpg" alt="Pisang Cokelat">
                     <h4>Pisang Cokelat</h4>
@@ -1217,16 +1311,12 @@
                 <input type="email" placeholder="">
             </div>
             <div class="form-group">
-                <label>Perusahaan</label>
-                <input type="text" placeholder="">
-            </div>
-            <div class="form-group">
                 <label>Subjek *</label>
                 <input type="text" placeholder="">
             </div>
             <div class="form-group">
                 <label>Pertanyaan *</label>
-                <textarea rows="5" placeholder="Jika ini pesanan khusus, mohon cantumkan detail seperti: Jenis Kue, Ukuran, Tema/Warna, Tulisan di Kue, Tanggal Acara, dan Link Foto Referensi."></textarea>
+                <textarea rows="5" placeholder="Tuliskan pesan Anda di sini..."></textarea>
             </div>
             <div style="text-align: right;">
                 <button class="btn" style="background-color: #333;">Submit</button>
@@ -1240,7 +1330,6 @@
                 <p><i class="fas fa-clock"></i> <strong>Jam Operasional:</strong><br>
                 Senin - Sabtu: 09.30 - 18.00<br>
                 Minggu: 09.00 - 18.00</p>
-                <p><i class="fas fa-star"></i> Rating Google: 4.9 / 5.0</p>
             </div>
 
             <div class="map-container">
@@ -1438,32 +1527,96 @@
             const type = document.getElementById('custType').value;
             const size = document.getElementById('custSize').value;
             const date = document.getElementById('custDate').value;
-            const theme = document.getElementById('custTheme').value;
-            const text = document.getElementById('custText').value;
             const budget = document.getElementById('custBudget').value;
-            const fileInput = document.getElementById('custImage');
 
             let message = `Halo D'Lumerz, saya ingin memesan Custom Order:%0A%0A`;
             message += `*Nama:* ${name}%0A`;
             message += `*Jenis Kue:* ${type}%0A`;
             message += `*Ukuran/Porsi:* ${size}%0A`;
             message += `*Tanggal Acara:* ${date}%0A`;
-            if(theme) message += `*Tema/Warna:* ${theme}%0A`;
-            if(text) message += `*Tulisan di Kue:* ${text}%0A`;
             if(budget) message += `*Estimasi Budget:* ${budget}%0A`;
-
-            if (fileInput.files.length > 0) {
-                const fileName = fileInput.files[0].name;
-                message += `%0A*(Saya akan melampirkan foto referensi: ${fileName} di chat ini)*%0A`;
-            } else {
-                message += `%0A*(Belum ada foto referensi)*%0A`;
-            }
             message += `%0AMohon info ketersediaan dan total harganya. Terima kasih.`;
 
             window.open(`https://wa.me/6283838893466?text=${message}`, '_blank');
             bootstrap.Modal.getInstance(document.getElementById('customOrderModal')).hide();
             this.reset();
         });
+
+        // ==========================================
+        // AUTHENTICATION (LOGIN & REGISTER SIMPLE)
+        // ==========================================
+        const loginBtn = document.getElementById('loginBtn');
+        const userDropdown = document.getElementById('userDropdown');
+        const userNameDisplay = document.getElementById('userNameDisplay');
+        
+        const loginModalEl = document.getElementById('loginModal');
+        const loginModal = new bootstrap.Modal(loginModalEl);
+        
+        const registerModalEl = document.getElementById('registerModal');
+        const registerModal = new bootstrap.Modal(registerModalEl);
+
+        // Cek status login saat halaman dimuat
+        function updateLoginUI() {
+            const user = localStorage.getItem('loggedInUser');
+            if (user) {
+                loginBtn.classList.add('d-none');
+                userDropdown.classList.remove('d-none');
+                userNameDisplay.textContent = 'Hi, ' + user;
+            } else {
+                loginBtn.classList.remove('d-none');
+                userDropdown.classList.add('d-none');
+            }
+        }
+        updateLoginUI();
+
+        // Fungsi Pindah Modal
+        function switchToRegister() {
+            loginModal.hide();
+            setTimeout(() => registerModal.show(), 300);
+        }
+        
+        function switchToLogin() {
+            registerModal.hide();
+            setTimeout(() => loginModal.show(), 300);
+        }
+
+        // Logic Login
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const username = email.split('@')[0]; 
+            localStorage.setItem('loggedInUser', username);
+            updateLoginUI();
+            loginModal.hide();
+            this.reset();
+        });
+
+        // Logic Register
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('regName').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            
+            if(password !== confirmPassword) {
+                alert("Kata sandi dan Konfirmasi Kata Sandi tidak cocok!");
+                return;
+            }
+            
+            // Simulasi Register berhasil
+            localStorage.setItem('loggedInUser', name);
+            updateLoginUI();
+            registerModal.hide();
+            this.reset();
+        });
+
+        // Logic Logout
+        function logout(e) {
+            if (e) e.preventDefault();
+            localStorage.removeItem('loggedInUser');
+            updateLoginUI();
+        }
 
         // ====================================================
         // INFINITE TESTIMONIAL CAROUSEL
