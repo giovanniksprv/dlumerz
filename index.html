@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D'Lumerz - Bakery & Creamery</title>
+
+    <!-- Bootstrap 5 Online CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Marcellus&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CSS Variables --- */
+        :root {
+            --primary-color: #C6A87C;
+            --text-dark: #2C2C2C;
+            --text-light: #ffffff;
+            --bg-light: #FAF8F5;
+            --footer-bg: #4A4754;
+            --font-logo: 'Italiana', serif;
+            --font-heading: 'Marcellus', serif;
+            --font-body: 'Jost', sans-serif;
+        }
+
+        html { scroll-behavior: smooth; }
+        section { scroll-margin-top: 80px; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-dark);
+            line-height: 1.8;
+            overflow-x: hidden;
+            font-weight: 300;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            font-weight: 400;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 35px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #b09368;
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        /* --- Header --- */
+        header {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 5%;
+            z-index: 1000;
+            color: var(--text-light);
+            transition: all 0.4s ease;
+        }
+
+        header.scrolled {
+            position: fixed;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            color: var(--text-dark);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            padding: 15px 5%;
+        }
+
+        .header-left, .header-right {
+            display: flex;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .header-right { cursor: pointer; position: relative; }
+        .header-right i { font-size: 24px; transition: color 0.3s; }
+        .header-right:hover i { color: var(--primary-color); }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px; right: -10px;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            width: 20px; height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-family: var(--font-body);
+            transition: transform 0.2s;
+        }
+
+        .logo {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--font-logo);
+            font-size: 38px;
+            font-weight: 400;
+            color: var(--primary-color);
+            text-align: center;
+            line-height: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hamburger { font-size: 24px; cursor: pointer; }
+
+        /* --- Offcanvas Menu --- */
+        .offcanvas { background-color: var(--bg-light); width: 300px; }
+        .offcanvas-header { border-bottom: 1px solid #e0e0e0; }
+        .offcanvas-title {
+            font-family: var(--font-logo);
+            color: var(--primary-color);
+            font-size: 28px;
+        }
+        .offcanvas-body .nav-link {
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            transition: color 0.3s;
+        }
+        .offcanvas-body .nav-link:hover {
+            color: var(--primary-color);
+            background-color: transparent;
+        }
+
+        /* --- Cart Offcanvas --- */
+        #offcanvasCart { width: 380px; }
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .cart-item img {
+            width: 70px; height: 70px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .cart-item-info { flex: 1; }
+        .cart-item-info h6 {
+            font-family: var(--font-body);
+            font-weight: 500;
+            margin-bottom: 5px;
+            font-size: 0.95rem;
+        }
+        .cart-item-info p {
+            color: var(--primary-color);
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        .cart-item-qty {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+        }
+        .cart-item-qty button {
+            background: #eee;
+            border: none;
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .cart-item-qty button:hover { background: #ddd; }
+        .cart-item-remove {
+            color: #dc3545;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0;
+        }
+
+        .cart-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
+        }
+
+        .fulfillment-options {
+            background: #fff;
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid #eee;
+            margin-bottom: 15px;
+        }
+        .fulfillment-options label {
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        .fulfillment-options input[type="radio"] {
+            accent-color: var(--primary-color);
+            transform: scale(1.2);
+        }
+
+        #deliveryAddressContainer { display: none; margin-top: 10px; }
+        #deliveryAddressContainer textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            resize: none;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            font-family: var(--font-body);
+            border-top: 1px dashed #ccc;
+            padding-top: 15px;
+        }
+
+        /* --- HERO CAROUSEL (HEADER) --- */
+        .hero-carousel {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .hero-carousel .carousel,
+        .hero-carousel .carousel-inner,
+        .hero-carousel .carousel-item {
+            height: 100vh;
+            width: 100%;
+        }
+
+        .hero-carousel .carousel-item {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        .hero-carousel .carousel-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.45));
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--text-light);
+            padding: 0 20px;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .hero-content h1 {
+            font-size: 5rem;
+            margin-bottom: 15px;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .hero-content .btn {
+            pointer-events: auto;
+        }
+
+        .hero-carousel .carousel-indicators {
+            z-index: 6;
+            bottom: 30px;
+        }
+        .hero-carousel .carousel-indicators [data-bs-target] {
+            width: 30px;
+            height: 3px;
+            background-color: rgba(255,255,255,0.6);
+            border: none;
+            opacity: 1;
+            transition: background-color 0.3s;
+        }
+        .hero-carousel .carousel-indicators .active {
+            background-color: var(--primary-color);
+        }
+        .hero-carousel .carousel-control-prev,
+        .hero-carousel .carousel-control-next {
+            z-index: 6;
+            width: 6%;
+            opacity: 0.6;
+        }
+        .hero-carousel .carousel-control-prev:hover,
+        .hero-carousel .carousel-control-next:hover {
+            opacity: 1;
+        }
+
+        /* --- About Section --- */
+        .about-section { display: flex; align-items: center; gap: 60px; }
+        .about-image { flex: 1; }
+        .about-image img {
+            width: 100%;
+            border-radius: 2px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        .about-text { flex: 1; }
+        .about-text h2 {
+            font-size: 3rem;
+            color: var(--text-dark);
+            position: relative;
+            padding-bottom: 15px;
+        }
+        .about-text h2::after {
+            content: '';
+            position: absolute;
+            left: 0; bottom: 0;
+            width: 60px; height: 1px;
+            background-color: var(--primary-color);
+        }
+        .about-text p {
+            color: #555;
+            font-size: 1.05rem;
+            margin-top: 20px;
+        }
+
+        /* --- Katalog --- */
+        .cakes-section { text-align: center; background-color: white; }
+        .cakes-section h2 { font-size: 3rem; color: var(--text-dark); }
+        .cakes-section p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .product-card {
+            text-align: left;
+            background: white;
+            padding-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            transition: transform 0.3s ease;
+            border: 1px solid #f0f0f0;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+        .product-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+        .product-card h4 {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            padding: 0 20px;
+            margin-bottom: 5px;
+        }
+        .product-card .price {
+            padding: 0 20px;
+            color: var(--primary-color);
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 15px;
+            font-family: var(--font-body);
+        }
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            padding: 0 20px;
+            margin-top: auto;
+        }
+        .btn-cart {
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 8px 12px;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-cart:hover { background: var(--primary-color); color: white; }
+        .btn-buy {
+            flex: 1;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 2px;
+            cursor: pointer;
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+        .btn-buy:hover { background: #b09368; }
+
+        /* --- PERBAIKAN TEKS KATEGORI (TENGAH) --- */
+        .category-title {
+            font-size: 2.2rem;
+            color: var(--text-dark);
+            text-align: center;
+            margin-top: 60px;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            display: block;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .category-desc {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* --- Custom Section --- */
+        .custom-section { text-align: center; }
+        .custom-section h2 { font-size: 3rem; color: var(--text-dark); }
+        .custom-section p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        .custom-section .btn {
+            background-color: #333;
+            margin-bottom: 50px;
+        }
+        .custom-section .btn:hover { background-color: #555; }
+        .custom-image {
+            width: 100%;
+            height: 550px;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+
+        /* --- Testimonial Section (Infinite Marquee) --- */
+        .testimonial-section {
+            text-align: center;
+            background-color: white;
+            overflow: hidden;
+        }
+        .testimonial-section h2 { font-size: 3rem; color: var(--text-dark); }
+        .testimonial-section > p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto 20px;
+        }
+
+        .testimonial-marquee {
+            overflow: hidden;
+            cursor: grab;
+            padding: 20px 0;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: pan-y;
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+        }
+        .testimonial-marquee:active { cursor: grabbing; }
+
+        .testimonial-track {
+            display: flex;
+            gap: 30px;
+            width: max-content;
+            will-change: transform;
+            touch-action: pan-y;
+        }
+
+        .testimonial-card {
+            flex: 0 0 350px;
+            width: 350px;
+            background-color: var(--bg-light);
+            padding: 40px 30px;
+            border-radius: 4px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            text-align: center;
+            white-space: normal;
+        }
+        .testimonial-card i.fa-quote-left {
+            color: var(--primary-color);
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+        .testimonial-card p {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+        .testimonial-card h5 {
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 1rem;
+            margin-bottom: 5px;
+            color: var(--text-dark);
+        }
+        .testimonial-card .stars {
+            color: #F1C40F;
+            font-size: 14px;
+        }
+
+        /* --- Contact --- */
+        .contact-section {
+            display: flex;
+            gap: 60px;
+            background-color: white;
+            padding-top: 40px;
+            align-items: flex-start;
+        }
+        .contact-form { flex: 1.2; }
+        .contact-info-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .contact-info { padding-top: 10px; }
+        .contact-info h3 {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            margin-bottom: 25px;
+        }
+        .contact-info p {
+            margin-bottom: 20px;
+            color: #555;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+        .contact-info i {
+            color: var(--primary-color);
+            margin-top: 6px;
+            font-size: 1.1rem;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 350px;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            border: 1px solid #eee;
+        }
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        .map-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+            color: var(--primary-color);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .map-link:hover { color: var(--text-dark); }
+
+        .form-group {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+        .form-group label {
+            width: 160px;
+            color: #333;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-top: 15px;
+        }
+        .form-group input, .form-group textarea {
+            flex: 1;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 2px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            background-color: #FAFAFA;
+            transition: border 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--footer-bg);
+            color: white;
+            padding: 80px 5% 30px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+        .footer-logo {
+            font-family: var(--font-logo);
+            font-size: 36px;
+            color: var(--primary-color);
+            text-align: left;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+        .footer-col h4 {
+            font-family: var(--font-body);
+            font-size: 1rem;
+            margin-bottom: 25px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--primary-color);
+        }
+        .footer-col ul {
+            padding-left: 0;
+            margin-bottom: 15px;
+        }
+        .footer-col ul li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #b0b0b0;
+            transition: color 0.3s;
+        }
+        .footer-col ul li a {
+            color: #b0b0b0;
+            transition: color 0.3s;
+        }
+        .footer-col ul li:hover, .footer-col ul li a:hover { color: white; }
+        .footer-col ul li i {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+        .contact-label {
+            font-weight: 500;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: white;
+        }
+        .social-icons {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .social-icons i {
+            font-size: 22px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .social-icons i:hover { color: var(--primary-color); }
+
+        /* --- Modal --- */
+        .modal-content {
+            border-radius: 4px;
+            border: none;
+            background-color: var(--bg-light);
+        }
+        .modal-header {
+            border-bottom: 1px solid var(--primary-color);
+            padding: 20px 30px;
+        }
+        .modal-title {
+            font-family: var(--font-heading);
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+        .modal-body { padding: 30px; }
+        .modal-body .form-label {
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        .modal-body .form-control {
+            border-radius: 2px;
+            background-color: #fff;
+        }
+        .modal-body .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(198, 168, 124, 0.25);
+        }
+        .modal-footer {
+            border-top: 1px solid #eee;
+            padding: 20px 30px;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 992px) {
+            .product-grid { grid-template-columns: repeat(2, 1fr); }
+            .about-section { flex-direction: column; text-align: center; }
+            .about-text h2::after { left: 50%; transform: translateX(-50%); }
+            .contact-section { flex-direction: column; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero-content h1 { font-size: 4rem; }
+            .map-container { height: 300px; }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 3rem; }
+            .hero-content p { font-size: 1rem; }
+            .product-grid { grid-template-columns: 1fr; }
+            .form-group { flex-direction: column; align-items: flex-start; }
+            .form-group label { margin-bottom: 8px; margin-top: 0; }
+            .form-group input, .form-group textarea { width: 100%; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .logo { font-size: 28px; }
+            .map-container { height: 250px; }
+            .testimonial-card {
+                flex: 0 0 280px;
+                width: 280px;
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Offcanvas Menu -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">D'Lumerz</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="#hero">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#about">Tentang Kami</a></li>
+                <li class="nav-item"><a class="nav-link" href="#katalog-menu">Menu Kategori</a></li>
+                <li class="nav-item"><a class="nav-link" href="#testimonials">Apa Kata Pelanggan</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">Hubungi Kami</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Offcanvas Cart -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasCartLabel">Keranjang Belanja</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column">
+            <div id="cart-items-container" class="flex-grow-1">
+                <p class="text-muted text-center mt-4" id="empty-cart-msg">Keranjang Anda masih kosong.</p>
+            </div>
+
+            <div class="cart-footer" id="cart-footer" style="display: none;">
+                <div class="fulfillment-options">
+                    <p style="font-weight: 600; margin-bottom: 10px; font-size: 0.95rem;">Metode Pesanan:</p>
+                    <label>
+                        <input type="radio" name="fulfillment" value="pickup" checked onchange="toggleAddress()"> Ambil di Toko (Gratis)
+                    </label>
+                    <label>
+                        <input type="radio" name="fulfillment" value="delivery" onchange="toggleAddress()"> Kirim ke Rumah (Ongkir menyusul)
+                    </label>
+
+                    <div id="deliveryAddressContainer">
+                        <textarea id="deliveryAddress" rows="3" placeholder="Tulis alamat lengkap & patokan (wajib jika kirim)"></textarea>
+                    </div>
+                </div>
+
+                <div class="cart-total">
+                    <span>Total:</span>
+                    <span id="cart-total-price">Rp 0</span>
+                </div>
+                <button class="btn w-100" onclick="checkoutWA()" style="background-color: #25D366;">
+                    <i class="fab fa-whatsapp me-2"></i> Checkout via WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Form Pesanan Khusus -->
+    <div class="modal fade" id="customOrderModal" tabindex="-1" aria-labelledby="customOrderModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="customOrderModalLabel">Form Pesanan Khusus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="customOrderForm">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nama Lengkap *</label>
+                                <input type="text" class="form-control" id="custName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Jenis Kue / Pesanan *</label>
+                                <input type="text" class="form-control" id="custType" placeholder="Contoh: Kue Ulang Tahun" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Ukuran / Porsi *</label>
+                                <input type="text" class="form-control" id="custSize" placeholder="Contoh: Diameter 20 cm" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Tanggal Acara *</label>
+                                <input type="date" class="form-control" id="custDate" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Tema / Warna</label>
+                                <input type="text" class="form-control" id="custTheme" placeholder="Contoh: Bunga pastel">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Tulisan di Kue</label>
+                                <input type="text" class="form-control" id="custText" placeholder="Contoh: Happy Birthday Sarah">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Estimasi Budget</label>
+                                <input type="text" class="form-control" id="custBudget" placeholder="Contoh: Rp 200.000">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Upload Foto Referensi (Opsional)</label>
+                                <input type="file" class="form-control" id="custImage" accept="image/*">
+                                <small class="text-muted" style="font-size: 0.8rem;">*Foto yang dipilih tidak akan terkirim otomatis. Silakan lampirkan (attach) foto secara manual di chat WhatsApp setelah ini.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-bs-dismiss="modal" style="background-color: #ccc; color: #333;">Batal</button>
+                        <button type="submit" class="btn" style="background-color: #25D366;">
+                            <i class="fab fa-whatsapp me-2"></i> Kirim ke WhatsApp
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header (Navbar) -->
+    <header id="header">
+        <div class="header-left">
+            <i class="fas fa-bars hamburger" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"></i>
+        </div>
+        <div class="logo">D'Lumerz</div>
+        <div class="header-right" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+            <i class="fas fa-shopping-bag"></i>
+            <span class="cart-badge" id="cart-badge">0</span>
+        </div>
+    </header>
+
+    <!-- HERO CAROUSEL (HEADER) - 3 GAMBAR -->
+    <section class="hero-carousel" id="hero">
+        <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+
+            <div class="carousel-inner">
+                <div class="carousel-item active" style="background-image: url('https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?q=80&w=1600&auto=format&fit=crop');"></div>
+                <div class="carousel-item" style="background-image: url('https://d1vbn70lmn1nqe.cloudfront.net/prod/wp-content/uploads/2023/08/04032202/ini-resep-bolu-mentega-lembut-anti-gagal-untuk-camilan-sore-halodoc.jpg');"></div>
+                <div class="carousel-item" style="background-image: url('https://blog.tokowahab.com/wp-content/uploads/2024/09/Cara-Membuat-Resep-Brownies-Shiny-Crust-Panggang-Untuk-Ulang-Tahun.jpg');"></div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+        <div class="hero-content">
+            <h1>Sweetness That Melts</h1>
+            <p>Temukan Kelezatan di Setiap Gigitan <br> #DLumerzMoments</p>
+            <a href="#katalog-menu" class="btn">Shop Now</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="container about-section" id="about">
+        <div class="about-image">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8tnPPUnKf9qSWo-6Q3xNzvxHN1KvbLbnNPXNsKa8P_7gWYGfvNtHCLzpq&s=10" alt="Toko D'Lumerz">
+        </div>
+        <div class="about-text">
+            <h2>Tentang Kami</h2>
+            <p>D'Lumerz adalah destinasi kuliner yang menghadirkan aneka hidangan manis dan gurih dengan cita rasa yang lumer di mulut. Kami berkomitmen menggunakan bahan-bahan berkualitas untuk menciptakan pengalaman bersantap yang tak terlupakan bagi setiap pelanggan. Dari camilan favorit hingga kue khusus, setiap produk dibuat dengan penuh perhatian dan dedikasi.</p>
+        </div>
+    </section>
+
+    <!-- Katalog Menu Kategori -->
+    <section class="cakes-section" id="katalog-menu">
+        <div class="container">
+            <h2 style="text-align: center;">Menu Kategori</h2>
+            <p style="text-align: center;">Berikut adalah seluruh koleksi kue dan camilan yang kami jual. Dibuat fresh setiap hari dengan bahan-bahan premium.</p>
+
+            <!-- Kategori 1 -->
+            <h3 class="category-title">1. Cake & Bolu</h3>
+            <p class="category-desc">Aneka kue lembut, basah, dan bolu dengan tekstur premium.</p>
+            <div class="product-grid">
+                <div class="product-card">
+                    <img src="https://lh3.googleusercontent.com/grass-cs/AABkmLeljq7CQ-XUM_qxEXRKNvwGD0udFhPw8-GvQw8ge95hMPAGKM-nCO0qu2WpO-yHsq6TBSsepmwvpV-TKoAvX0Rglun7KWQ4118GpMZOjINy9GoAwvWmnhb7QjNw7Iho5D2lCOZ3hg=w215-h280-p-k-no" alt="Brownies Lumer">
+                    <h4>Brownies Lumer</h4>
+                    <p class="price">Rp 30.000</p>
+                    <div class="product-actions">
+                        <button class="btn-cart" onclick="addToCart('Brownies Lumer', 30000, 'https://lh3.googleusercontent.com/grass-cs/AABkmLeljq7CQ-XUM_qxEXRKNvwGD0udFhPw8-GvQw8ge95hMPAGKM-nCO0qu2WpO-yHsq6TBSsepmwvpV-TKoAvX0Rglun7KWQ4118GpMZOjINy9GoAwvWmnhb7QjNw7Iho5D2lCOZ3hg=w215-h280-p-k-no')"><i class="fas fa-cart-plus"></i></button>
+                        <button class="btn-buy" onclick="buyNow('Brownies Lumer', 30000, 'https://lh3.googleusercontent.com/grass-cs/AABkmLeljq7CQ-XUM_qxEXRKNvwGD0udFhPw8-GvQw8ge95hMPAGKM-nCO0qu2WpO-yHsq6TBSsepmwvpV-TKoAvX0Rglun7KWQ4118GpMZOjINy9GoAwvWmnhb7QjNw7Iho5D2lCOZ3hg=w215-h280-p-k-no')">Beli</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://image.idn.media/post/20260504/rqjgp9nlsvq-hd_58db6103-f3b6-4806-bf79-2251121bc284.jpg" alt="Red Velvet">
+                    <h4>Red Velvet</h4>
+                    <p class="price">Rp 120.000</p>
+                    <div class="product-actions">
+                        <button class="btn-cart" onclick="addToCart('Red Velvet', 120000, 'https://image.idn.media/post/20260504/rqjgp9nlsvq-hd_58db6103-f3b6-4806-bf79-2251121bc284.jpg')"><i class="fas fa-cart-plus"></i></button>
+                        <button class="btn-buy" onclick="buyNow('Red Velvet', 120000, 'https://image.idn.media/post/20260504/rqjgp9nlsvq-hd_58db6103-f3b6-4806-bf79-2251121bc284.jpg')">Beli</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://cdn.yummy.co.id/content-images/images/20201130/vbwWGcyD3Qhk415nZzoWx2qrMkaNO46d-31363036373333373834d41d8cd98f00b204e9800998ecf8427e.jpg?x-oss-process=image/resize,w_600,h_600,m_fill,image/format,webp" alt="Rainbow Cake">
+                    <h4>Rainbow Cake</h4>
+                    <p class="price">Rp 120.000</p>
+                    <div class="product-actions">
+                        <button class="btn-cart" onclick="addToCart('Rainbow Cake', 120000, 'https://cdn.yummy.co.id/content-images/images/20201130/vbwWGcyD3Qhk415nZzoWx2qrMkaNO46d-31363036373333373834d41d8cd98f00b204e9800998ecf8427e.jpg?x-oss-process=image/resize,w_600,h_600,m_fill,image/format,webp')"><i class="fas fa-cart-plus"></i></button>
+                        <button class="btn-buy" onclick="buyNow('Rainbow Cake', 120000, 'https://cdn.yummy.co.id/content-images/images/20201130/vbwWGcyD3Qhk415nZzoWx2qrMkaNO46d-31363036373333373834d41d8cd98f00b204e9800998ecf8427e.jpg?x-oss-process=image/resize,w_600,h_600,m_fill,image/format,webp')">Beli</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjndfUTTEcg4NODTLC6AZhfywN7T8NOHjzuatTBwkshMVOsUnWq7sMJgY&s=10" alt="Kue Ulang Tahun">
+                    <h4>Kue Ulang Tahun</h4>
+                    <p class="price">Rp 200.000</p>
+                    <div class="product-actions">
+                        <button class="btn-cart" onclick="addToCart('Kue Ulang Tahun', 200000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjndfUTTEcg4NODTLC6AZhfywN7T8NOHjzuatTBwkshMVOsUnWq7sMJgY&s=10')"><i class="fas fa-cart-plus"></i></button>
+                        <button class="btn-buy" onclick="buyNow('Kue Ulang Tahun', 200000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjndfUTTEcg4NODTLC6AZhfywN7T8NOHjzuatTBwkshMVOsUnWq7sMJgY&s=10')">Beli</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://static.promediateknologi.id/crop/0x0:0x0/1200x0/webp/photo/p1/587/2024/04/05/bo-2508434892.jpg" alt="Bolu Pandan">
+                    <h4>Bolu Pandan</h4>
+                    <p class="price">Rp 45.000</p>
+                    <div class="product-actions">
+                        <button class="btn-cart" onclick="addToCart('Bolu Pandan', 45000, 'https://static.promediateknologi.id/crop/0x0:0x0/1200x0/webp/photo/p1/587/2024/04/05/bo-2508434892.jpg')"><i class="fas fa-cart-plus"></i></button>
+                        <button class="btn-buy" onclick="buyNow('Bolu Pandan', 45000, 'https://static.promediateknologi.id/crop/0x0:0x0/1200x0/webp/photo/p1/587/2024/04/05/bo-2508434892.jpg')">Beli</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://www.indianhealthyrecipes.com/wp-content/uploads/2021/01/banana-cake-recipe.jpg" alt="Banana Cake">
+                    <h4>Banana Cake</h4>
+                    <p class="price">Rp 40.000</p>
+                    <div class="product-actions">
+                        <button class="btn-cart" onclick="addToCart('Banana Cake', 40000, 'https://www.indianhealthyrecipes.com/wp-content/uploads/2021/01/banana-cake-recipe.jpg')"><i class="fas fa-cart-plus"></i></button>
+                        <button class="btn-buy" onclick="buyNow('Banana Cake', 40000, 'https://www.indianhealthyrecipes.com/wp-content/uploads/2021/01/banana-cake-recipe.jpg')">Beli</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThY--m4OeHZRgs723ChbVXn5PPlHH7AI8Cl5SYNSExQgW7yRbvWChoslZI&s=10" alt="Bolu Mentega">
+                    <h4>Bolu Mentega</h4>
+                    <p class="price">Rp 45.000</p>
+                    <div class="product-actions">
+                        <button class="btn-cart" onclick="addToCart('Bolu Mentega', 45000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThY--m4OeHZRgs723ChbVXn5PPlHH7AI8Cl5SYNSExQgW7yRbvWChoslZI&s=10')"><i class="fas fa-cart-plus"></i></button>
+                        <button class="btn-buy" onclick="buyNow('Bolu Mentega', 45000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThY--m4OeHZRgs723ChbVXn5PPlHH7AI8Cl5SYNSExQgW7yRbvWChoslZI&s=10')">Beli</button>
+                    </div>
+                </div>
+                <!-- Chocolate Drip Cake -->
+                <div class="product-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO9KmyVltCNQ4brZdfvD2_LS36e9esqNZDnUJv2v03aNnbM6EMjgxFOKk&s=10" alt="Chocolate Drip Cake">
+                    <h4>Chocolate Drip Cake</h4>
+                    <p class="price">Rp 150.000</p>
+                    <div class="product-actions">
+                        <button class="btn-cart" onclick="addToCart('Chocolate Drip Cake', 150000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO9KmyVltCNQ4brZdfvD2_LS36e9esqNZDnUJv2v03aNnbM6EMjgxFOKk&s=10')"><i class="fas fa-cart-plus"></i></button>
+                        <button class="btn-buy" onclick="buyNow('Chocolate Drip Cake', 150000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO9KmyVltCNQ4brZdfvD2_LS36e9esqNZDnUJv2v03aNnbM6EMjgxFOKk&s=10')">Beli</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kategori 2 -->
+            <h3 class="category-title">2. Pastry & Tart</h3>
+            <p class="category-desc">Camilan renyah, manis, dan berlapis yang cocok untuk teman santai.</p>
+            <div class="product-grid">
+                <div class="product-card">
+                    <img src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRGLgFHm8qIPyIGhUvEDFttOSofQNRf5RYu-4lmpOwqJqlZeir7" alt="Fruit Pastry">
+                    <h4>Fruit Pastry</h4>
+                    <p class="price">Rp 25.000</p>
+                    <div class="product-actions">
+                        <button class="btn-cart" onclick="addToCart('Fruit Pastry', 25000, 'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRGLgFHm8qIPyIGhUvEDFttOSofQNRf5RYu-4lmpOwqJqlZeir7')"><i class="fas fa-cart-plus"></i></button>
+                        <button class="btn-buy" onclick="buyNow('Fruit Pastry', 25000, 'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRGLgFHm8qIPyIGhUvEDFttOSofQNRf5RYu-4lmpOwqJqlZeir7')">Beli</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://43andcompany.myshopify.com/cdn/shop/products/IMG_3783.jpg?v=1638209279" alt="Mini Fruit Tart">
+                    <h4>Mini Fruit Tart</h4>
+                    <p class="price">Rp 35.000</p>
+                    <div class="product-actions">
+                        <button class="btn-cart" onclick="addToCart('Mini Fruit Tart', 35000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9X96PbMIyMuSL9IkxUnycRTU9jiWsN4EvaSq6B2nMSyLLDDCCuQ5ggdKp&s=10')"><i class="fas fa-cart-plus"></i></button>
+                        <button class="btn-buy" onclick="buyNow('Mini Fruit Tart', 35000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9X96PbMIyMuSL9IkxUnycRTU9jiWsN4EvaSq6B2nMSyLLDDCCuQ5ggdKp&s=10')">Beli</button>
+                    </div>
+                </div>
+                <!-- Vanilla Tart -->
+                <div class="product-card">
+                    <img src="https://img.taste.com.au/QjnE5ZSu/w1200-h1200-cfill-q80/taste/2016/11/classic-custard-tarts-92533-1.jpeg" alt="Vanilla Tart">
+                    <h4>Vanilla Tart</h4>
+                    <p class="price">Rp 35.000</p>
+                    <div class="product-actions">
+                        <button class="btn-cart" onclick="addToCart('Vanilla Tart', 35000, 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?q=80&w=600&auto=format&fit=crop')"><i class="fas fa-cart-plus"></i></button>
+                        <button class="btn-buy" onclick="buyNow('Vanilla Tart', 35000, 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?q=80&w=600&auto=format&fit=crop')">Beli</button>
+                    </div>
+                </div>
+                <!-- Chocolate Tart -->
+                <div class="product-card">
+                    <img src="https://www.elmundoeats.com/wp-content/uploads/2024/02/Mini-salted-chocolate-tarts.jpg" alt="Chocolate Tart">
+                    <h4>Chocolate Tart</h4>
+                    <p class="price">Rp 40.000</p>
+                    <div class="product-actions">
+                        <button class="btn-cart" onclick="addToCart('Chocolate Tart', 40000, 'https://images.unsplash.com/photo-1541599468348-e96984315921?q=80&w=600&auto=format&fit=crop')"><i class="fas fa-cart-plus"></i></button>
+                        <button class="btn-buy" onclick="buyNow('Chocolate Tart', 40000, 'https://images.unsplash.com/photo-1541599468348-e96984315921?q=80&w=600&auto=format&fit=crop')">Beli</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kategori 3 -->
+            <h3 class="category-title">3. Jajanan & Camilan</h3>
+            <p class="category-desc">Jajanan pasar klasik dan camilan gurih yang selalu digemari.</p>
+            <div class="product-grid">
+                <div class="product-card">
+                    <img src="https://blog.tokowahab.com/wp-content/uploads/2019/11/Resep-Kue-Pukis-Bangka.jpg" alt="Kue Pukis">
+                    <h4>Kue Pukis</h4>
+                    <p class="price">Rp 40.000</p>
+                    <div class="product-actions">
+                        <button class="btn-cart" onclick="addToCart('Kue Pukis', 40000, 'https://blog.tokowahab.com/wp-content/uploads/2019/11/Resep-Kue-Pukis-Bangka.jpg')"><i class="fas fa-cart-plus"></i></button>
+                        <button class="btn-buy" onclick="buyNow('Kue Pukis', 40000, 'https://blog.tokowahab.com/wp-content/uploads/2019/11/Resep-Kue-Pukis-Bangka.jpg')">Beli</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://pict.sindonews.com/dyn/850/pena/news/2020/12/19/185/274104/resep-donat-kentang-lembut-simpel-dan-anti-gagal-yuk-dicoba-lxj.jpg" alt="Donat Kentang">
+                    <h4>Donat Kentang</h4>
+                    <p class="price">Rp 15.000</p>
+                    <div class="product-actions">
+                        <button class="btn-cart" onclick="addToCart('Donat Kentang', 15000, 'https://asset.kompas.com/crops/t4Zw3CdkqM0kAMClNPkJCmdG0cc=/0x0:1000x667/1200x800/data/photo/2021/06/23/60d2b0fb77b33.jpg')"><i class="fas fa-cart-plus"></i></button>
+                        <button class="btn-buy" onclick="buyNow('Donat Kentang', 15000, 'https://asset.kompas.com/crops/t4Zw3CdkqM0kAMClNPkJCmdG0cc=/0x0:1000x667/1200x800/data/photo/2021/06/23/60d2b0fb77b33.jpg')">Beli</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://cdn1-production-images-kly.akamaized.net/J71ayPSBpZZM0E4GeVldjA3d-cE=/1280x720/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/928916/original/041260800_1436887793-Kue-Khas-Lebaran-Nastar.jpg" alt="Nastar">
+                    <h4>Nastar</h4>
+                    <p class="price">Rp 45.000</p>
+                    <div class="product-actions">
+                        <button class="btn-cart" onclick="addToCart('Nastar', 45000, 'https://cdn1-production-images-kly.akamaized.net/J71ayPSBpZZM0E4GeVldjA3d-cE=/1280x720/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/928916/original/041260800_1436887793-Kue-Khas-Lebaran-Nastar.jpg')"><i class="fas fa-cart-plus"></i></button>
+                        <button class="btn-buy" onclick="buyNow('Nastar', 45000, 'https://cdn1-production-images-kly.akamaized.net/J71ayPSBpZZM0E4GeVldjA3d-cE=/1280x720/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/928916/original/041260800_1436887793-Kue-Khas-Lebaran-Nastar.jpg')">Beli</button>
+                    </div>
+                </div>
+                <!-- Pisang Cokelat -->
+                <div class="product-card">
+                    <img src="https://i.pinimg.com/736x/49/92/a1/4992a12ccefda90c055250514b724e8b.jpg" alt="Pisang Cokelat">
+                    <h4>Pisang Cokelat</h4>
+                    <p class="price">Rp 35.000</p>
+                    <div class="product-actions">
+                        <button class="btn-cart" onclick="addToCart('Pisang Cokelat', 35000, 'https://images.unsplash.com/photo-1587735243615-c03f25aaff15?q=80&w=600&auto=format&fit=crop')"><i class="fas fa-cart-plus"></i></button>
+                        <button class="btn-buy" onclick="buyNow('Pisang Cokelat', 35000, 'https://images.unsplash.com/photo-1587735243615-c03f25aaff15?q=80&w=600&auto=format&fit=crop')">Beli</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Creation Section -->
+    <section class="container custom-section">
+        <h2>Pesanan Khusus</h2>
+        <p>Ingin merayakan momen spesial dengan kue atau hidangan sesuai keinginan Anda? D'Lumerz menerima pesanan khusus untuk berbagai acara, dengan desain dan rasa yang dapat disesuaikan.</p>
+        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#customOrderModal">HUBUNGI KAMI</button>
+        <br>
+        <img src="https://annsbakehouse.com/web/image/8959-eb91eb66/Custom%20cupcake%201" alt="Custom Cake" class="custom-image">
+    </section>
+
+    <!-- Testimonial Section (Infinite Marquee) -->
+    <section class="container testimonial-section" id="testimonials">
+        <h2>Apa Kata Pelanggan</h2>
+        <p>Geser kartu untuk melihat lebih banyak, atau biarkan bergulir otomatis.</p>
+
+        <div class="testimonial-marquee">
+            <div class="testimonial-track" id="testimonialTrack">
+                <div class="testimonial-card">
+                    <i class="fas fa-quote-left"></i>
+                    <p>"favorit semua, brownies nya juara, kue pukis nya juga enak, owner nya ramah, jangan ragu2 untuk chat tanya2..."</p>
+                    <h5>- Betty Nugraheni</h5>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <i class="fas fa-quote-left"></i>
+                    <p>"Kuenya enak2 banget... Owner nya ramah juga …"</p>
+                    <h5>- Febri Setiarini</h5>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <i class="fas fa-quote-left"></i>
+                    <p>"Ownernya ramaah bangeet , fast respon juga , birthday cake nya lucuuk2 , brownies nya uwenak pol , donatnya juga enaaksss"</p>
+                    <h5>- Ziggy Arendata</h5>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <i class="fas fa-quote-left"></i>
+                    <p>"Kue ulang tahunnya cantik banget, rasanya juga enak. Recommended untuk acara spesial!"</p>
+                    <h5>- Sarah Wulandari</h5>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <i class="fas fa-quote-left"></i>
+                    <p>"Brownies lumer nya juara, legit dan gak bikin enek. Pasti repeat order lagi!"</p>
+                    <h5>- Andi Pratama</h5>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <i class="fas fa-quote-left"></i>
+                    <p>"Pelayanan cepat, kue selalu fresh. Sudah langganan dari tahun lalu dan gak pernah kecewa."</p>
+                    <h5>- Rina Maharani</h5>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="container contact-section" id="contact">
+        <div class="contact-form">
+            <div class="form-group">
+                <label>Nama *</label>
+                <input type="text" placeholder="">
+            </div>
+            <div class="form-group">
+                <label>Nomor Telepon *</label>
+                <input type="tel" placeholder="">
+            </div>
+            <div class="form-group">
+                <label>Email *</label>
+                <input type="email" placeholder="">
+            </div>
+            <div class="form-group">
+                <label>Perusahaan</label>
+                <input type="text" placeholder="">
+            </div>
+            <div class="form-group">
+                <label>Subjek *</label>
+                <input type="text" placeholder="">
+            </div>
+            <div class="form-group">
+                <label>Pertanyaan *</label>
+                <textarea rows="5" placeholder="Jika ini pesanan khusus, mohon cantumkan detail seperti: Jenis Kue, Ukuran, Tema/Warna, Tulisan di Kue, Tanggal Acara, dan Link Foto Referensi."></textarea>
+            </div>
+            <div style="text-align: right;">
+                <button class="btn" style="background-color: #333;">Submit</button>
+            </div>
+        </div>
+
+        <div class="contact-info-wrapper">
+            <div class="contact-info">
+                <h3>D'Lumerz</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Silakan lihat peta di bawah untuk lokasi tepatnya.</p>
+                <p><i class="fas fa-clock"></i> <strong>Jam Operasional:</strong><br>
+                Senin - Sabtu: 09.30 - 18.00<br>
+                Minggu: 09.00 - 18.00</p>
+                <p><i class="fas fa-star"></i> Rating Google: 4.9 / 5.0</p>
+            </div>
+
+            <div class="map-container">
+                <iframe
+                    src="https://www.google.com/maps?q=D'Lumerz&output=embed"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+            <a href="https://maps.app.goo.gl/Co8haHr9SdbYWGJX8" target="_blank" rel="noopener noreferrer" class="map-link">
+                <i class="fas fa-external-link-alt"></i> Buka di Google Maps
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h2 class="footer-logo">D'Lumerz</h2>
+                <h4>Lokasi Kami</h4>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i>Bener, Kec. Tengaran, Kabupaten Semarang, Jawa Tengah 50775</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <p class="contact-label">Whatsapp</p>
+                <ul>
+                    <li>
+                        <a href="https://wa.me/6283838893466" target="_blank" rel="noopener noreferrer">
+                            +62 838-3889-3466
+                        </a>
+                    </li>
+                </ul>
+
+                <p class="contact-label" style="margin-top: 15px;">Email</p>
+                <ul>
+                    <li>
+                        <a href="mailto:gieogvny@gmail.com">
+                            gieogvny@gmail.com
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Informasi</h4>
+                <ul>
+                    <li>Bantuan & Pengiriman</li>
+                    <li>Lokasi Toko</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Media Sosial</h4>
+                <div class="social-icons">
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-facebook-square"></i>
+                    <i class="fab fa-tiktok"></i>
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // --- Header Scroll ---
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) header.classList.add('scrolled');
+            else header.classList.remove('scrolled');
+        });
+
+        // --- Keranjang Belanja ---
+        let cart = [];
+        const cartBadge = document.getElementById('cart-badge');
+        const cartItemsContainer = document.getElementById('cart-items-container');
+        const cartFooter = document.getElementById('cart-footer');
+        const cartTotalPrice = document.getElementById('cart-total-price');
+        const offcanvasCart = new bootstrap.Offcanvas(document.getElementById('offcanvasCart'));
+
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+        }
+
+        function addToCart(name, price, img) {
+            const existing = cart.find(item => item.name === name);
+            if (existing) existing.qty += 1;
+            else cart.push({ name, price, img, qty: 1 });
+            updateCartUI();
+            cartBadge.style.transform = 'scale(1.3)';
+            setTimeout(() => cartBadge.style.transform = 'scale(1)', 200);
+        }
+
+        function buyNow(name, price, img) {
+            addToCart(name, price, img);
+            offcanvasCart.show();
+        }
+
+        function changeQty(name, amount) {
+            const item = cart.find(item => item.name === name);
+            if (item) {
+                item.qty += amount;
+                if (item.qty <= 0) removeFromCart(name);
+                else updateCartUI();
+            }
+        }
+
+        function removeFromCart(name) {
+            cart = cart.filter(item => item.name !== name);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            cartBadge.textContent = totalItems;
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p class="text-muted text-center mt-4">Keranjang Anda masih kosong.</p>';
+                cartFooter.style.display = 'none';
+                return;
+            }
+
+            cartFooter.style.display = 'block';
+            cartItemsContainer.innerHTML = '';
+            let totalPrice = 0;
+
+            cart.forEach(item => {
+                totalPrice += item.price * item.qty;
+                cartItemsContainer.insertAdjacentHTML('beforeend', `
+                    <div class="cart-item">
+                        <img src="${item.img}" alt="${item.name}">
+                        <div class="cart-item-info">
+                            <h6>${item.name}</h6>
+                            <p>${formatRupiah(item.price)}</p>
+                            <div class="cart-item-qty">
+                                <button onclick="changeQty('${item.name}', -1)">-</button>
+                                <span>${item.qty}</span>
+                                <button onclick="changeQty('${item.name}', 1)">+</button>
+                            </div>
+                        </div>
+                        <button class="cart-item-remove" onclick="removeFromCart('${item.name}')">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                `);
+            });
+            cartTotalPrice.textContent = formatRupiah(totalPrice);
+        }
+
+        function toggleAddress() {
+            const method = document.querySelector('input[name="fulfillment"]:checked').value;
+            document.getElementById('deliveryAddressContainer').style.display = method === 'delivery' ? 'block' : 'none';
+        }
+
+        function checkoutWA() {
+            if (cart.length === 0) return;
+            const method = document.querySelector('input[name="fulfillment"]:checked').value;
+            const address = document.getElementById('deliveryAddress').value;
+
+            if (method === 'delivery' && address.trim() === '') {
+                alert("Mohon isi alamat lengkap untuk pengiriman.");
+                return;
+            }
+
+            let message = "Halo D'Lumerz, saya ingin memesan:%0A%0A";
+            let total = 0;
+            cart.forEach(item => {
+                const subtotal = item.price * item.qty;
+                total += subtotal;
+                message += `- ${item.name} (${item.qty}x) = ${formatRupiah(subtotal)}%0A`;
+            });
+            message += `%0A*Total Produk: ${formatRupiah(total)}*%0A%0A`;
+            message += `*Metode Pesanan:* ${method === 'pickup' ? 'Ambil di Toko' : 'Kirim ke Rumah'}%0A`;
+            if (method === 'delivery') {
+                message += `*Alamat Pengiriman:* ${address}%0A`;
+                message += `*(Ongkos kirim akan diinfokan oleh admin)*%0A`;
+            } else {
+                message += `*(Saya akan mengambil pesanan di toko)*%0A`;
+            }
+            message += `%0AMohon info ketersediaan dan total akhirnya. Terima kasih.`;
+            window.open(`https://wa.me/6283838893466?text=${message}`, '_blank');
+        }
+
+        // --- Custom Order Form ---
+        document.getElementById('customOrderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('custName').value;
+            const type = document.getElementById('custType').value;
+            const size = document.getElementById('custSize').value;
+            const date = document.getElementById('custDate').value;
+            const theme = document.getElementById('custTheme').value;
+            const text = document.getElementById('custText').value;
+            const budget = document.getElementById('custBudget').value;
+            const fileInput = document.getElementById('custImage');
+
+            let message = `Halo D'Lumerz, saya ingin memesan Custom Order:%0A%0A`;
+            message += `*Nama:* ${name}%0A`;
+            message += `*Jenis Kue:* ${type}%0A`;
+            message += `*Ukuran/Porsi:* ${size}%0A`;
+            message += `*Tanggal Acara:* ${date}%0A`;
+            if(theme) message += `*Tema/Warna:* ${theme}%0A`;
+            if(text) message += `*Tulisan di Kue:* ${text}%0A`;
+            if(budget) message += `*Estimasi Budget:* ${budget}%0A`;
+
+            if (fileInput.files.length > 0) {
+                const fileName = fileInput.files[0].name;
+                message += `%0A*(Saya akan melampirkan foto referensi: ${fileName} di chat ini)*%0A`;
+            } else {
+                message += `%0A*(Belum ada foto referensi)*%0A`;
+            }
+            message += `%0AMohon info ketersediaan dan total harganya. Terima kasih.`;
+
+            window.open(`https://wa.me/6283838893466?text=${message}`, '_blank');
+            bootstrap.Modal.getInstance(document.getElementById('customOrderModal')).hide();
+            this.reset();
+        });
+
+        // ====================================================
+        // INFINITE TESTIMONIAL CAROUSEL
+        // ====================================================
+        class InfiniteTestimonialSlider {
+            constructor(trackId, speed = 0.6) {
+                this.track = document.getElementById(trackId);
+                this.speed = speed;
+                this.position = 0;
+                this.halfWidth = 0;
+                this.isDragging = false;
+                this.isHovering = false;
+                this.startX = 0;
+                this.startPosition = 0;
+                this.dragThreshold = 5;
+                this.hasMoved = false;
+
+                this.init();
+            }
+
+            init() {
+                const marquee = this.track.parentElement;
+
+                requestAnimationFrame(() => {
+                    const originalHTML = this.track.innerHTML;
+                    const containerWidth = marquee.offsetWidth;
+
+                    let safety = 0;
+                    while (this.track.scrollWidth < containerWidth * 2 && safety < 10) {
+                        this.track.innerHTML += originalHTML;
+                        safety++;
+                    }
+
+                    this.halfWidth = this.track.scrollWidth / 2;
+                    this.animate();
+
+                    this.track.addEventListener('pointerdown', (e) => this.onPointerDown(e));
+                    this.track.addEventListener('pointermove', (e) => this.onPointerMove(e));
+                    this.track.addEventListener('pointerup', (e) => this.onPointerUp(e));
+                    this.track.addEventListener('pointercancel', (e) => this.onPointerUp(e));
+                    this.track.addEventListener('pointerleave', (e) => {
+                        if (this.isDragging) this.onPointerUp(e);
+                    });
+
+                    marquee.addEventListener('mouseenter', () => this.isHovering = true);
+                    marquee.addEventListener('mouseleave', () => this.isHovering = false);
+                });
+            }
+
+            animate() {
+                if (!this.isDragging && !this.isHovering) {
+                    this.position -= this.speed;
+                }
+
+                if (this.halfWidth > 0) {
+                    while (this.position <= -this.halfWidth) this.position += this.halfWidth;
+                    while (this.position > 0) this.position -= this.halfWidth;
+                }
+
+                this.track.style.transform = `translate3d(${this.position}px, 0, 0)`;
+                requestAnimationFrame(() => this.animate());
+            }
+
+            onPointerDown(e) {
+                this.isDragging = true;
+                this.hasMoved = false;
+                this.startX = e.clientX;
+                this.startPosition = this.position;
+                this.track.style.cursor = 'grabbing';
+                try { this.track.setPointerCapture(e.pointerId); } catch (err) {}
+            }
+
+            onPointerMove(e) {
+                if (!this.isDragging) return;
+                const dx = e.clientX - this.startX;
+                if (Math.abs(dx) > this.dragThreshold) this.hasMoved = true;
+                this.position = this.startPosition + dx;
+            }
+
+            onPointerUp(e) {
+                if (!this.isDragging) return;
+                this.isDragging = false;
+                this.track.style.cursor = 'grab';
+                try { this.track.releasePointerCapture(e.pointerId); } catch (err) {}
+            }
+        }
+
+        new InfiniteTestimonialSlider('testimonialTrack', 0.8);
+    </script>
+</body>
+</html>
